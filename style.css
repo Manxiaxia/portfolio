@@ -522,10 +522,10 @@ footer {
 
     /* Page layout */
     .page {
-        padding: 3rem 1.5rem;
+        padding: 2rem 1.5rem;
         height: 100vh;
-        align-items: flex-start;
-        padding-top: 4rem;
+        align-items: center;
+        justify-content: center;
     }
 
     .page-inner {

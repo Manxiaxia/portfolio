@@ -519,9 +519,15 @@ footer {
     /* Page layout */
     .page {
         padding: 2rem 1.5rem;
-        height: 100vh;
+        height: 100dvh;
+        height: 100svh;
         align-items: center;
         justify-content: center;
+    }
+
+    .pages-wrapper {
+        height: 100dvh;
+        height: 100svh;
     }
 
     .page-inner {

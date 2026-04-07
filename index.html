@@ -362,11 +362,15 @@
             animFrame = requestAnimationFrame(tick);
         }
 
+        function getPageHeight() {
+            return pages[0].offsetHeight;
+        }
+
         function goToPage(index) {
             if (index < 0 || index >= totalPages || isAnimating) return;
             isAnimating = true;
             currentPage = index;
-            targetY = -currentPage * window.innerHeight;
+            targetY = -currentPage * getPageHeight();
 
             // Update nav dots
             dots.forEach(d => d.classList.remove('active'));
@@ -393,7 +397,7 @@
 
         // Recalculate on resize
         window.addEventListener('resize', () => {
-            targetY = -currentPage * window.innerHeight;
+            targetY = -currentPage * getPageHeight();
             currentY = targetY;
             wrapper.style.transform = `translate3d(0, ${currentY}px, 0)`;
         });

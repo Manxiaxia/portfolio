@@ -429,18 +429,35 @@
             }
         }, { passive: false });
 
-        // Touch support
+        // Touch support — respects inner scroll
         let touchStartY = 0;
+        let touchStartTime = 0;
+
         window.addEventListener('touchstart', (e) => {
             touchStartY = e.touches[0].clientY;
+            touchStartTime = Date.now();
         }, { passive: true });
 
         window.addEventListener('touchend', (e) => {
             const diff = touchStartY - e.changedTouches[0].clientY;
-            if (Math.abs(diff) > 50) {
-                if (diff > 0) goToPage(currentPage + 1);
-                else goToPage(currentPage - 1);
+            const elapsed = Date.now() - touchStartTime;
+
+            // Ignore very slow drags (likely inner scrolling)
+            if (elapsed > 500) return;
+            if (Math.abs(diff) < 50) return;
+
+            const inner = pages[currentPage].querySelector('.page-inner');
+            if (inner && inner.scrollHeight > inner.clientHeight) {
+                const atTop = inner.scrollTop <= 0;
+                const atBottom = inner.scrollTop + inner.clientHeight >= inner.scrollHeight - 2;
+
+                // Only change page if at scroll boundary
+                if (diff > 0 && !atBottom) return;
+                if (diff < 0 && !atTop) return;
             }
+
+            if (diff > 0) goToPage(currentPage + 1);
+            else goToPage(currentPage - 1);
         }, { passive: true });
 
         // Keyboard support
